@@ -98,8 +98,77 @@ app.post('/register',(req,res)=>{
 
 })
 
-//app.
 
+app.post('/get_profile',(req,res)=>{
+    var data = {
+        shop_ID : req.body.shop_ID
+    }
+
+    var sql_code = "SELECT User_name ,Shop_name,Phone , Email,Address FROM shop_info WHERE Shop_ID = "+data.shop_name
+    connect_db.query(sql_code,function(err,result){
+        if (err){
+            console.log(err);
+            var response = {
+                data: null,
+                status:false
+            }
+            res.send(response)
+        }else{
+            var response = {
+                data :result,
+                status:true
+            }
+            res.send(response)
+        }
+    })
+})
+
+
+app.post('/add_product',(req,res)=>{
+    var data = {
+        shop_ID:req.body.shop_ID,
+        Product_name : req.body.Product_name,
+        url : req.body.url
+    }
+    var sql_code = "INSERT INTO products (shop_ID,Product_name,url) VALUES ("+data.shop_ID+",'"+data.Product_name+"','"+data.url+"')"
+    connect_db.query(sql_code,function(err,result){
+        if (err){
+            console.log(err);
+            var response = {
+                status:false
+            }
+            res.send(response)
+        }else{
+            var response = {
+                status:true
+            }
+            res.send(response)
+        }
+    })
+})
+
+app.post('/get_product',(req,res)=>{
+    var data = {
+        shop_ID : req.body.shop_ID
+    }
+    var sql_code = "SELECT Product_ID, Product_name , url FROM products WHERE Shop_ID = "+data.shop_ID
+    connect_db.query(sql_code,function(err,result){
+        if (err){
+            console.log(err);
+            var response = {
+                data: null,
+                status:false
+            }
+            res.send(response)
+        }else{
+            var response = {
+                data :result,
+                status:true
+            }
+            res.send(response)
+        }
+    })
+})
 
 //feed
 
