@@ -42,15 +42,23 @@ app.post('/login',(req,res)=>{
         password: req.body.password 
     }
 
-    var sql_code = "SELECT User_name ,Password FROM shop_info WHERE User_name = '"+data.username+"'AND Password='"+data.password+"';"
+    var sql_code = "SELECT Shop_ID , User_name ,Password FROM shop_info WHERE User_name = '"+data.username+"'AND Password='"+data.password+"';"
 
     connect_db.query(sql_code,function(err,result){
         if(err) console.log(err);        
-        console.log()
-        if (JSON.stringify(result) == "[]"){
-            res.send('true')
+        console.log(result)
+        if (JSON.stringify(result) == "[]"){            
+            var response = {
+                ID : null,
+                status : false
+            }
+            res.send(response)
         }else{
-            res.send('false')
+            var response = {
+                ID : result[0]['Shop_ID'],
+                status : true
+            }
+            res.send(response)
         }
     })
 
@@ -74,10 +82,16 @@ app.post('/register',(req,res)=>{
     connect_db.query(sql_code,function(err,result){
         if (err){
             console.log(err);
-            res.send('false')
+            var response = {
+                status:false
+            }
+            res.send(response)
         }else{
             //console.log(result)  //show data from client 
-            res.send('true')
+            var response = {
+                status:true
+            }
+            res.send(response)
         }
         
     })
