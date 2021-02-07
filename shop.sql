@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 07, 2021 at 09:09 AM
+-- Generation Time: Feb 07, 2021 at 06:55 PM
 -- Server version: 8.0.17
 -- PHP Version: 7.3.10
 
@@ -30,11 +30,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `customer` (
   `Customer_ID` int(11) NOT NULL,
-  `Customer_name` varchar(50) NOT NULL,
+  `First_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Phone` int(10) NOT NULL,
   `Email` varchar(50) NOT NULL,
+  `Address` varchar(300) NOT NULL,
+  `Url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Password` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`Customer_ID`, `First_name`, `Last_name`, `Phone`, `Email`, `Address`, `Url`, `Password`) VALUES
+(1, 'hello', 'worled', 2147483647, 'email', 'dddddd', 'image/7.jpg', 555555);
 
 -- --------------------------------------------------------
 
@@ -133,7 +143,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `Customer_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Customer_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`

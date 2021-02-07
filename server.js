@@ -34,7 +34,7 @@ app.use((req,res,next)=>{
 app.use(express.static('public'))
 
 //login   use post method   by into username and password
-app.post('/login',(req,res)=>{
+app.post('/login_shop',(req,res)=>{
     console.log("login event")
 
     var data = {
@@ -67,7 +67,7 @@ app.post('/login',(req,res)=>{
 
 //register       (username , password,ชื่อร้าน,เบอร์โทร , email , ที่อยู่)
 
-app.post('/register',async (req,res)=>{
+app.post('/register_shop',async (req,res)=>{
     console.log('register event')
 
     var data = {
@@ -88,14 +88,12 @@ app.post('/register',async (req,res)=>{
         if (err){
             console.log(err);
             var response = {
-                data : imagedir,
                 status:false
             }
             res.send(response)
         }else{
             //console.log(result)  //show data from client 
             var response = {
-                data : imagedir,
                 status:true
             }
             res.send(response)
@@ -106,7 +104,7 @@ app.post('/register',async (req,res)=>{
 })
 
 
-app.post('/get_profile',(req,res)=>{
+app.get('/get_profile_shop',(req,res)=>{
     var data = {
         shop_id : req.body.shop_id
     }
@@ -125,13 +123,13 @@ app.post('/get_profile',(req,res)=>{
             console.log(err);
             var response = {
                 data: null,
-                status:false
+                status:400
             }
             res.send(response)
         }else{
             var response = {
                 data :result,
-                status:true
+                status:200
             }
             res.send(response)
         }
@@ -171,14 +169,11 @@ app.post('/add_product',(req,res)=>{
     })
 })
 
-app.post('/get_product',(req,res)=>{
+app.get('/get_allproduct',(req,res)=>{
     var data = {
         shop_id : req.body.shop_id
     }
-    var sql_code = "SELECT Product_ID, Product_name , Url ,	Description FROM products WHERE Shop_ID = "+data.shop_id
-
-    
-
+    var sql_code = "SELECT Product_ID, Product_name , Url ,	Description FROM products WHERE Shop_ID = "+data.shop_id  
 
     connect_db.query(sql_code,function(err,result){
         if (err){
@@ -207,6 +202,34 @@ app.post('/get_product',(req,res)=>{
     })
 })
 
+app.get('/get_product',(req,res)=>{
+    var data = {
+        product_id : req.body.product_id
+    }
+    var sql_code = "SELECT Shop_ID, Product_name , Url ,Description FROM products WHERE Product_ID = "+data.product_id 
+
+    connect_db.query(sql_code,function(err,result){
+        if (err){
+            console.log(err);
+            var response = {
+                data: null,
+                status:false
+            }
+            res.send(response)
+        }else{
+            for(var i = 0; i < result.length;i++){
+                var imagetobase64 = fs.readFileSync(result[i]['Url'],{encoding : 'base64'})
+                delete result[i]['Url']
+                result[i]["image"] = imagetobase64
+            }   
+            var response = {
+                data :result,
+                status:true
+            }
+            res.send(response)
+        }
+    })
+})
 //feed
 
 app.get('/image',async (req,res)=>{
@@ -226,8 +249,73 @@ app.get('/image',async (req,res)=>{
     })
 })
 
+app.post('/register_customer',async (req,res)=>{
+    console.log('register event')
+
+    var data = {
+        password : req.body.password,
+        first_name : req.body.first_name,
+        last_name : req.body.last_name,
+        phone : req.body.phone,
+        email : req.body.email,
+        image : await req.body.image,
+        address : req.body.address
+    }
+    // fs.writeFile('/image/')
+    var imagedir = fs.readdirSync("./image").length
+    fs.writeFileSync("./image/"+imagedir+".jpg",data.image,'base64',function(err){
+        if (err) console.log(err)
+    })
+    var sql_code = "INSERT INTO customer (Password,First_name,Last_name,Phone,Email,Address,Url) VALUES ("+data.password+",'"+data.first_name+"','"+data.last_name+"',"+data.phone+",'"+data.email+"','"+data.address+"','image/"+imagedir+".jpg')"
+    connect_db.query(sql_code,function(err,result){
+        if (err){
+            console.log(err);
+            var response = {
+                status:false
+            }
+            res.send(response)
+        }else{
+            //console.log(result)  //show data from client 
+            var response = {
+                status:true
+            }
+            res.send(response)
+        }
+        
+    })
+
+})
 
 
+app.post('/login_customer',(req,res)=>{
+    console.log("login event")
+
+    var data = {
+        email: req.body.email,
+        password: req.body.password 
+    }
+
+    var sql_code = "SELECT Customer_ID , Email ,Password FROM customer WHERE Email = '"+data.email+"'AND Password='"+data.password+"';"
+  
+    connect_db.query(sql_code,function(err,result){
+        if(err) console.log(err);        
+        console.log(result)
+        if (JSON.stringify(result) == "[]"){            
+            var response = {
+                ID : null,
+                status : false
+            }
+            res.send(response)
+        }else{
+            var response = {
+                ID : result[0]['Customer_ID'],
+                status : true
+            }
+            res.send(response)
+        }
+    })
+
+})
 
 
 
