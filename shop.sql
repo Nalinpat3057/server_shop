@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 21, 2021 at 09:23 AM
+-- Generation Time: Feb 07, 2021 at 09:09 AM
 -- Server version: 8.0.17
 -- PHP Version: 7.3.10
 
@@ -46,8 +46,20 @@ CREATE TABLE `products` (
   `Product_ID` int(11) NOT NULL,
   `Shop_ID` int(11) NOT NULL,
   `Product_name` varchar(100) NOT NULL,
-  `url` varchar(300) NOT NULL
+  `Url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`Product_ID`, `Shop_ID`, `Product_name`, `Url`, `Description`) VALUES
+(2, 2, 'hello', 'thhpdfdfdfdf', ''),
+(3, 2, 'hellddo', 'thhpdfdfdddddfdf', ''),
+(6, 55, 'dddddd', 'image/2.jpg', 'hello'),
+(7, 55, 'dddddsdsdsdd', 'image/3.jpg', 'hello'),
+(8, 55, 'dddddsssssdsdsdd', 'image/4.jpg', 'hello');
 
 -- --------------------------------------------------------
 
@@ -57,11 +69,11 @@ CREATE TABLE `products` (
 
 CREATE TABLE `shop_info` (
   `Shop_ID` int(11) NOT NULL,
-  `User_name` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Password` int(11) NOT NULL,
   `Shop_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Phone` int(10) NOT NULL,
   `Email` varchar(100) NOT NULL,
+  `Url` varchar(100) NOT NULL,
   `Address` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -69,15 +81,9 @@ CREATE TABLE `shop_info` (
 -- Dumping data for table `shop_info`
 --
 
-INSERT INTO `shop_info` (`Shop_ID`, `User_name`, `Password`, `Shop_name`, `Phone`, `Email`, `Address`) VALUES
-(1, 'art', 192, '', 0, '', ''),
-(2, 'artxx', 12345, '', 0, '', ''),
-(3, 'artxx', 12345, 'undefined', 123466998, 'sanayut@gmail.com', '24/5 bankkok thailand'),
-(4, 'artxx', 12345, 'undefined', 123466998, 'sanayut@gmail.com', '24/5 bankkok thailand'),
-(5, 'artxx', 12345, 'undefined', 123466998, 'sanayut@gmail.com', '24/5 bankkok thailand'),
-(6, 'artxx', 12345, 'art shop', 123466998, 'sanayut@gmail.com', '24/5 bankkok thailand'),
-(7, 'artxx', 12345, 'art shop', 123466998, 'sanayut@gmail.com', '24/5 bankkok thailand'),
-(8, 'artxx', 12345, 'art shop', 123466998, 'sanayut@gmail.com', '24/5 bankkok thailand');
+INSERT INTO `shop_info` (`Shop_ID`, `Password`, `Shop_name`, `Phone`, `Email`, `Url`, `Address`) VALUES
+(17, 12345, 'art shop', 1123452324, 'sanayut@gmail.com', 'image/0.jpg', '24/5 bankkok thailand'),
+(18, 12345, 'art shop', 1123452324, 'sanayut@gmail.com', 'image/1.jpg', '24/5 bankkok thailand');
 
 -- --------------------------------------------------------
 
@@ -133,13 +139,13 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `shop_info`
 --
 ALTER TABLE `shop_info`
-  MODIFY `Shop_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Shop_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `users`
